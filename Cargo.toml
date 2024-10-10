@@ -1,6 +1,6 @@
 [package]
 name = "mmapcell"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 authors = ["Maxi Saparov <maxi.saparov@gmail.com>"]
 description = "a simple wrapper for the memmap2 crate to cast mmap backed pointers to structs"
