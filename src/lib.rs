@@ -35,6 +35,13 @@ pub struct MmapCell<T> {
     _inner: PhantomData<T>,
 }
 
+impl<T> Drop for MmapCell<T> {
+    fn drop(&mut self) {
+        // this probably happens anyways but just in case
+        let _ = self.raw.flush();
+    }
+}
+
 // WARN:
 // i'm not sure i want to leave these in because
 // it isn't super clear that these are VERY unsafe to call
