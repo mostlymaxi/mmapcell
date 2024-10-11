@@ -111,7 +111,13 @@ impl<T> MmapCell<T> {
     }
 
     pub fn get<'a>(&self) -> &'a T {
-        unsafe { &*self.raw.as_ptr().cast::<T>() }
+        unsafe {
+            self.raw
+                .as_ptr()
+                .cast::<T>()
+                .as_ref()
+                .expect("not null pointer")
+        }
     }
 
     pub fn get_mut<'a>(&self) -> &'a mut T {
