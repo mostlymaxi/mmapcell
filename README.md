@@ -23,7 +23,7 @@ This is a helpful wrapper for the same usecase:
       thing2: f64,
    }
 
-   let cell = unsafe {
+   let mut cell = unsafe {
        MmapCell::<MyStruct>::new_named("/tmp/mystruct-mmap-test.bin")
    }.unwrap();
 

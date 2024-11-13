@@ -21,7 +21,7 @@ use std::{marker::PhantomData, path::Path};
 ///    thing2: f64,
 /// }
 ///
-/// let cell = unsafe {
+/// let mut cell = unsafe {
 ///     MmapCell::<MyStruct>::new_named("/tmp/mystruct-mmap-test.bin")
 /// }.unwrap();
 ///
@@ -120,8 +120,14 @@ impl<T> MmapCell<T> {
         }
     }
 
-    pub fn get_mut<'a>(&self) -> &'a mut T {
-        unsafe { &mut *self.raw.as_ptr().cast_mut().cast::<T>() }
+    pub fn get_mut<'a>(&mut self) -> &'a mut T {
+        unsafe {
+            self.raw
+                .as_mut_ptr()
+                .cast::<T>()
+                .as_mut()
+                .expect("non null pointer")
+        }
     }
 }
 
@@ -135,7 +141,7 @@ mod tests {
 
     #[test]
     fn anon_mmapcell() {
-        let anon_cell = MmapCell::<TestStruct>::new_anon().unwrap();
+        let mut anon_cell = MmapCell::<TestStruct>::new_anon().unwrap();
         anon_cell.get_mut().thing1 = 3;
 
         assert!(anon_cell.get().thing1 == 3);
